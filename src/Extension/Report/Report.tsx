@@ -112,6 +112,7 @@ class ReportContent extends React.Component<{}, IReportContentState> {
                     this.setState({ selectedTabId: items[0].commitId as string });
                     this.setState({ items: items });
                 } else {
+                    console.error("The report was not found in release");
                     await this.validateReportInRepository();
                 }
             }
