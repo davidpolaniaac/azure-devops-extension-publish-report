@@ -1,0 +1,52 @@
+{
+  "name": "publish-html-report",
+  "version": "1.0.3",
+  "description": "web extension",
+  "keywords": [
+    "extensions",
+    "Azure DevOps",
+    "Visual Studio Team Services"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "scripts": {
+    "build:task": "cd publishReportTask && tsc",
+    "preinstall": "cd publishReportTask && npm install",
+    "clean": "rimraf ./dist",
+    "compile": "npm run clean && webpack --mode production",
+    "compile:dev": "npm run clean && webpack --mode development",
+    "prebuild": "npm run build:task",
+    "build": "npm run compile",
+    "build:dev": "npm run prebuild && npm run compile:dev && npm run postbuild",
+    "postbuild": "npm run package-extension -- --output-path dist --rev-version",
+    "package-extension": "tfx extension create --manifest-globs vss-extension.json",
+    "publish-extension": "tfx extension publish --manifest-globs vss-extension.json"
+  },
+  "dependencies": {
+    "azure-devops-extension-api": "^1.154.1",
+    "azure-devops-extension-sdk": "^2.0.11",
+    "azure-devops-ui": "^1.156.1",
+    "react": "~16.3.2",
+    "react-dom": "~16.3.2"
+  },
+  "devDependencies": {
+    "@types/react": "^16.3.2",
+    "@types/react-dom": "^16.0.7",
+    "base64-inline-loader": "^1.1.1",
+    "copy-webpack-plugin": "^4.5.4",
+    "css-loader": "~1.0.0",
+    "file-loader": "~2.0.0",
+    "node-sass": "~4.9.4",
+    "rimraf": "~2.6.2",
+    "sass-loader": "~7.1.0",
+    "style-loader": "~0.23.1",
+    "tfx-cli": "^0.6.4",
+    "ts-loader": "~5.2.2",
+    "typescript": "^2.9.2",
+    "webpack": "^4.22.0",
+    "webpack-cli": "^3.1.2"
+  }
+}
