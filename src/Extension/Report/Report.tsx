@@ -17,7 +17,6 @@ interface ItemReport {
     url?: string;
     commitId?: string;
     content?: string;
-    name?: string;
 }
 
 interface IReportContentState {
@@ -93,15 +92,14 @@ class ReportContent extends React.Component<{}, IReportContentState> {
                             url: attachment.timelineId,
                             commitId: attachment.recordId,
                             path: planId,
-                            comment: attachment.name.includes('-+-') ? attachment.name.split('-+-')[0]: attachment.name,
-                            name: attachment.name
+                            comment: attachment.name
                         }
                         items.push(item);
                     });
                 }
 
                 for (const item of items) {
-                    const content: ArrayBuffer = await releaseClient.getReleaseTaskAttachmentContent(project.id, RELEASE_RELEASEID, RELEASE_ENVIRONMENTID, RELEASE_ATTEMPTNUMBER, item.path as string, item.url as string, item.commitId as string, 'publish-report', item.name as string);
+                    const content: ArrayBuffer = await releaseClient.getReleaseTaskAttachmentContent(project.id, RELEASE_RELEASEID, RELEASE_ENVIRONMENTID, RELEASE_ATTEMPTNUMBER, item.path as string, item.url as string, item.commitId as string, 'publish-report', item.comment as string);
                     const dataView = new DataView(content);
                     const decoder = new TextDecoder("utf-8");
                     const decodedString = decoder.decode(dataView);
