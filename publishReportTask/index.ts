@@ -112,14 +112,14 @@ function getPush(inputReportName: string, content: string, lastestCommit: string
     return push;
 }
 
-async function saveReportInRelease(html: string, reportNameRandom: string) {
+async function saveReportInRelease(html: string, inputReportName: string, reportNameRandom: string) {
 
     try {
 
         common.banner("Save a report in release");
         const SYSTEM_DEFAULTWORKINGDIRECTORY = tl.getVariable("SYSTEM_DEFAULTWORKINGDIRECTORY");
         tl.writeFile(`${SYSTEM_DEFAULTWORKINGDIRECTORY}/${reportNameRandom}.html`, html, 'utf8');
-        tl.addAttachment('publish-report', reportNameRandom, `${SYSTEM_DEFAULTWORKINGDIRECTORY}/${reportNameRandom}.html`);
+        tl.addAttachment('publish-report', inputReportName, `${SYSTEM_DEFAULTWORKINGDIRECTORY}/${reportNameRandom}.html`);
         common.heading("¡ report has been saved successfully in release !");
 
     } catch (err) {
@@ -129,10 +129,10 @@ async function saveReportInRelease(html: string, reportNameRandom: string) {
 
 }
 
-async function saveReportInRepository(content: string, nameRepository: string, inputReportName: string, reportNameRandom: string) {
+async function saveReportInRepository(content: string, inputReportName: string, reportNameRandom: string) {
 
     common.banner('Git Configuration');
-
+    const nameRepository: string = "DevOps_Vault_Reports_Extension";
     const webApi: nodeApi.WebApi = await common.getWebApi();
     const gitApiObject: GitApi.IGitApi = await webApi.getGitApi();
     const project: string = common.getProject();
@@ -162,13 +162,12 @@ async function run() {
 
     try {
 
-        const REPOSITORY_NAME: string = "DevOps_Vault_Reports_Extension";
         const reportNameRandom: string = String(Date.now());
         const inputPathReport: string = tl.getInput('htmlPath', true);
         const inputReportName: string = tl.getInput('nameRepository', true);
         const html = await createReport(inputPathReport);
-        await saveReportInRelease(html, `${inputReportName}-+-${reportNameRandom}`);
-        await saveReportInRepository(html, REPOSITORY_NAME, inputReportName, reportNameRandom);
+        await saveReportInRelease(html, inputReportName, reportNameRandom);
+        await saveReportInRepository(html, inputReportName, reportNameRandom);
         
     }
     catch (err) {

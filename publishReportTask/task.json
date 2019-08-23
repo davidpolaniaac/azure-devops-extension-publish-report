@@ -15,7 +15,7 @@
     "version": {
         "Major": 0,
         "Minor": 0,
-        "Patch": 43
+        "Patch": 47
     },
     "instanceNameFormat": "Publish Report",
     "inputs": [
@@ -25,7 +25,11 @@
             "label": "Report Name",
             "defaultValue": "",
             "required": true,
-            "helpMarkDown": "Name to the artifact to be uploaded."
+            "helpMarkDown": "Name to the artifact to be uploaded.",
+            "validation": {
+                "expression": "isMatch(value,'^(?:[A-Za-z]+)(?:[A-Za-z0-9 _-]*)$','IgnoreCase')",
+                "message": "type a name for the report"
+            }
         },
         {
             "name": "htmlPath",
