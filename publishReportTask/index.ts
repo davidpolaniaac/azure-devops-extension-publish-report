@@ -65,7 +65,7 @@ async function getlastestCommit(nameRepository: string, gitApiObject: GitApi.IGi
     const commitCriteria: GitInterfaces.GitQueryCommitsCriteria = <GitInterfaces.GitQueryCommitsCriteria>{ $skip: 0, $top: 1 };
     const commits: GitInterfaces.GitCommitRef[] = await gitApiObject.getCommits(nameRepository, commitCriteria, project);
     let lastestCommit: string = COMMIT_INIT;
-
+    
     if (typeof commits === undefined || commits.length == 0) {
         common.heading("commit init");
     } else {
@@ -103,7 +103,7 @@ function getPush(inputReportName: string, content: string, lastestCommit: string
             }
         ], refUpdates: [
             {
-                name: "refs/heads/master",
+                name: "refs/heads/reports",
                 oldObjectId: lastestCommit
             }
         ], repository
@@ -168,7 +168,7 @@ async function run() {
         const html = await createReport(inputPathReport);
         await saveReportInRelease(html, inputReportName, reportNameRandom);
         await saveReportInRepository(html, inputReportName, reportNameRandom);
-        
+
     }
     catch (err) {
 
